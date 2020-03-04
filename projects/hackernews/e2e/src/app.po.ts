@@ -6,7 +6,7 @@ export class AppPage {
   }
 
   getTitleText(): Promise<string> {
-    return element(by.css('hn-root .content span')).getText() as Promise<
+    return element(by.css('app-root .content span')).getText() as Promise<
       string
     >;
   }

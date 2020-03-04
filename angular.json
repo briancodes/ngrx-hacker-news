@@ -12,7 +12,7 @@
       },
       "root": "projects/hackernews",
       "sourceRoot": "projects/hackernews/src",
-      "prefix": "hn",
+      "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -27,7 +27,7 @@
               "projects/hackernews/src/favicon.ico",
               "projects/hackernews/src/assets"
             ],
-            "styles": ["projects/hackernews/src/styles.scss"],
+            "styles": ["projects/hackernews/src/styles/styles.scss"],
             "scripts": []
           },
           "configurations": {
@@ -89,7 +89,7 @@
               "projects/hackernews/src/favicon.ico",
               "projects/hackernews/src/assets"
             ],
-            "styles": ["projects/hackernews/src/styles.scss"],
+            "styles": ["projects/hackernews/src/styles/styles.scss"],
             "scripts": []
           }
         },

@@ -1,0 +1,33 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~normalize.css';
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic');
+@import '~milligram/dist/milligram.css';
+@import 'variables';
+@import 'mixins';
+@import 'themes';
+
+html {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+ol,
+ul {
+  list-style-type: none;
+}
+
+// App styling
+html {
+  background-color: theme-var($--theme-background);
+}
