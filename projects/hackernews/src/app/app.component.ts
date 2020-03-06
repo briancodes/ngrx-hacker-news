@@ -5,8 +5,6 @@ import { ThemeService } from '@bcodes/ngx-theme-service';
     selector: 'app-root',
     template: `
         <div class="router-outlet-wrapper">
-            <!-- <app-navigation-container></app-navigation-container> -->
-            <div>Navigation</div>
             <router-outlet></router-outlet>
         </div>
     `,

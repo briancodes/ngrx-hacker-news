@@ -14,7 +14,7 @@ const themeServiceConfig: ThemeServiceConfig = {
     defaultTheme: 'light',
     transitionConfig: {
         className: 'theme-transition',
-        duration: 1500,
+        duration: 1000,
     },
 };
 

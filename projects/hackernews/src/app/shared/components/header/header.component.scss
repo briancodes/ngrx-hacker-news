@@ -1,0 +1,41 @@
+@import 'variables';
+@import 'mixins';
+@import 'themes';
+
+.header-container {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: theme-var($--theme-primary);
+    z-index: 1;
+    box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2),
+        0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
+}
+
+.header-content {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 750px;
+    margin: 0 auto;
+    h1,
+    h2,
+    h3,
+    h4 {
+        margin: 0;
+        margin-left: 5px;
+        color: black;
+    }
+}
+
+.header-links {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: flex-end;
+    .button-clear {
+        margin-bottom: 0;
+    }
+}

@@ -1,0 +1,9 @@
+<section
+    class="max-width-section"
+    [bcGlobalListeners]="['window:scroll']"
+    (bcGlobalEvent)="handleWindowEvent($event)"
+>
+    <ng-container *ngFor="let item of items; trackBy: trackByFn">
+        <app-story-item [item]="item"></app-story-item>
+    </ng-container>
+</section>

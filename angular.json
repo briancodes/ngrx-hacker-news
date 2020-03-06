@@ -27,6 +27,9 @@
                             "projects/hackernews/src/favicon.ico",
                             "projects/hackernews/src/assets"
                         ],
+                        "stylePreprocessorOptions": {
+                            "includePaths": ["projects/hackernews/src/styles"]
+                        },
                         "styles": [
                             "projects/hackernews/src/styles/styles.scss"
                         ],
@@ -91,6 +94,9 @@
                             "projects/hackernews/src/favicon.ico",
                             "projects/hackernews/src/assets"
                         ],
+                        "stylePreprocessorOptions": {
+                            "includePaths": ["projects/hackernews/src/styles"]
+                        },
                         "styles": [
                             "projects/hackernews/src/styles/styles.scss"
                         ],

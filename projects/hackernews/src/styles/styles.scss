@@ -8,6 +8,10 @@
 
 html {
     box-sizing: border-box;
+    font-size: 8px;
+    @media screen and (min-width: $small-width) {
+        font-size: 10px;
+    }
 }
 
 html,
@@ -30,4 +34,26 @@ ul {
 // App styling
 html {
     background-color: theme-var($--theme-background);
+}
+
+// Milligram overrides
+body,
+a {
+    color: theme-var($--theme-on-surface);
+}
+
+h2,
+h3,
+h4 {
+    font-weight: bold;
+}
+
+.button.button-clear {
+    color: black;
+    &:hover {
+        color: gray;
+    }
+    &:focus {
+        color: rgb(22, 21, 21);
+    }
 }

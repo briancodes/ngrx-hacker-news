@@ -48,12 +48,11 @@ const isSuccess = ({ state }: ServiceData) => state === ServiceState.success;
 @Component({
     selector: 'app-news-container',
     template: `
-        <p>{{ viewState$ | async }}</p>
-        <button (click)="handleLoadMore()">Load</button>
-        <button (click)="handleRefersh()">Refresh</button>
-        <div *ngFor="let item of storyItems$ | async; trackBy: trackByFn">
-            {{ item.title | json }}
-        </div>
+        <app-header (refresh)="handleRefersh()"></app-header>
+        <app-top-stories
+            [items]="storyItems$ | async"
+            (loadMore)="handleLoadMore()"
+        ></app-top-stories>
     `,
     styleUrls: ['./news-container.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -80,10 +79,6 @@ export class NewsContainerComponent implements OnInit, OnDestroy {
         this.servcieDataSubscribe();
         this.loadMoreSubscribe();
         this.handleRefersh();
-    }
-
-    trackByFn(index, item: Story) {
-        return item.id;
     }
 
     handleLoadMore() {

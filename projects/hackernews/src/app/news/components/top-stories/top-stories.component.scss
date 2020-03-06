@@ -1,0 +1,9 @@
+@import 'variables';
+@import 'mixins';
+@import 'themes';
+
+.max-width-section {
+    max-width: $max-width;
+    margin: 0 auto;
+    padding: 10px;
+}
