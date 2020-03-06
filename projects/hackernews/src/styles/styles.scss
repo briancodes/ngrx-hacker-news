@@ -7,27 +7,27 @@
 @import 'themes';
 
 html {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 html,
 body {
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
 }
 
 *,
 *:before,
 *:after {
-  box-sizing: inherit;
+    box-sizing: inherit;
 }
 
 ol,
 ul {
-  list-style-type: none;
+    list-style-type: none;
 }
 
 // App styling
 html {
-  background-color: theme-var($--theme-background);
+    background-color: theme-var($--theme-background);
 }

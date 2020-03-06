@@ -4,8 +4,8 @@ import { GlobalListenersDirective } from './directives/global-listeners.directiv
 const DIRECTIVES = [GlobalListenersDirective];
 
 @NgModule({
-  declarations: [...DIRECTIVES],
-  imports: [],
-  exports: [...DIRECTIVES],
+    declarations: [...DIRECTIVES],
+    imports: [],
+    exports: [...DIRECTIVES],
 })
 export class NgxUtilsModule {}

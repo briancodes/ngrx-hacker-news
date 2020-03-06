@@ -1,19 +1,19 @@
 import {
-  Directive,
-  EventEmitter,
-  Input,
-  NgZone,
-  OnDestroy,
-  OnInit,
-  Output,
+    Directive,
+    EventEmitter,
+    Input,
+    NgZone,
+    OnDestroy,
+    OnInit,
+    Output,
 } from '@angular/core';
 import { fromEvent, identity, merge, Observable, Subject } from 'rxjs';
 import { takeUntil, tap, throttleTime } from 'rxjs/operators';
 import { RXJS_UTILS } from '../utils/rxjs.utils';
 
 const EVENT_TARGETS = {
-  window,
-  document,
+    window,
+    document,
 };
 
 /**
@@ -46,57 +46,57 @@ const EVENT_TARGETS = {
  * ```
  */
 @Directive({
-  selector: '[bcGlobalListeners]',
+    selector: '[bcGlobalListeners]',
 })
 export class GlobalListenersDirective implements OnDestroy, OnInit {
-  /** Array of 'window' and 'document' events in the  form `'target:event'` */
-  @Input() bcGlobalListeners: ReadonlyArray<string> = []; // e.g ['window:resize', 'document:mousedown']
-  /** Rxjs `throttleTime` (default 250) to apply - uses leading:true, trailing: true. Set to `0` to disable */
-  @Input() bcGlobalThrottle = 250;
-  /** subscribe within zone.runOutsideAngular() - use zone.run() to trigger change detection */
-  @Input() bcGlobalRunOutside = true;
-  /** Single emitter for all events - use Event.type and Event.target to determine event */
-  @Output() bcGlobalEvent = new EventEmitter<Event>();
+    /** Array of 'window' and 'document' events in the  form `'target:event'` */
+    @Input() bcGlobalListeners: ReadonlyArray<string> = []; // e.g ['window:resize', 'document:mousedown']
+    /** Rxjs `throttleTime` (default 250) to apply - uses leading:true, trailing: true. Set to `0` to disable */
+    @Input() bcGlobalThrottle = 250;
+    /** subscribe within zone.runOutsideAngular() - use zone.run() to trigger change detection */
+    @Input() bcGlobalRunOutside = true;
+    /** Single emitter for all events - use Event.type and Event.target to determine event */
+    @Output() bcGlobalEvent = new EventEmitter<Event>();
 
-  private componentDestroyed$ = new Subject();
+    private componentDestroyed$ = new Subject();
 
-  constructor(private zone: NgZone) {}
+    constructor(private zone: NgZone) {}
 
-  ngOnInit(): void {
-    // build up an array of rxjs fromEvent observables
-    const observables: Observable<Event>[] = this.bcGlobalListeners.map(
-      item => {
-        const [target, eventType] = item.split(':');
-        const elem = EVENT_TARGETS[target];
-        if (!elem) {
-          throw new Error(
-            `GlobalListenersDirective: ${target} not 'window' or 'document'`
-          );
-        }
-        return fromEvent(elem, eventType);
-      }
-    );
-    // subscribe to the observables
-    merge(...observables)
-      .pipe(
-        this.bcGlobalRunOutside
-          ? RXJS_UTILS.runOutsideZone<Event>(this.zone)
-          : identity,
-        this.bcGlobalThrottle
-          ? throttleTime(this.bcGlobalThrottle, undefined, {
-              leading: true,
-              trailing: true,
-            })
-          : identity,
-        tap(event => {
-          this.bcGlobalEvent.emit(event);
-        }),
-        takeUntil(this.componentDestroyed$)
-      )
-      .subscribe();
-  }
+    ngOnInit(): void {
+        // build up an array of rxjs fromEvent observables
+        const observables: Observable<Event>[] = this.bcGlobalListeners.map(
+            item => {
+                const [target, eventType] = item.split(':');
+                const elem = EVENT_TARGETS[target];
+                if (!elem) {
+                    throw new Error(
+                        `GlobalListenersDirective: ${target} not 'window' or 'document'`
+                    );
+                }
+                return fromEvent(elem, eventType);
+            }
+        );
+        // subscribe to the observables
+        merge(...observables)
+            .pipe(
+                this.bcGlobalRunOutside
+                    ? RXJS_UTILS.runOutsideZone<Event>(this.zone)
+                    : identity,
+                this.bcGlobalThrottle
+                    ? throttleTime(this.bcGlobalThrottle, undefined, {
+                          leading: true,
+                          trailing: true,
+                      })
+                    : identity,
+                tap(event => {
+                    this.bcGlobalEvent.emit(event);
+                }),
+                takeUntil(this.componentDestroyed$)
+            )
+            .subscribe();
+    }
 
-  ngOnDestroy(): void {
-    this.componentDestroyed$.next();
-  }
+    ngOnDestroy(): void {
+        this.componentDestroyed$.next();
+    }
 }
