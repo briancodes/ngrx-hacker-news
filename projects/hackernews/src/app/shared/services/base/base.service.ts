@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { OnDestroy } from '@angular/core';
-import { BehaviorSubject, forkJoin, of, Subject } from 'rxjs';
-import { catchError, map, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { BehaviorSubject, of, Subject } from 'rxjs';
+import { catchError, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 export enum ServiceState {
     initial = 'initial',
@@ -14,8 +14,14 @@ export interface ServiceData<T = any> {
     items: T[];
 }
 
-export abstract class BaseItemsService<T = any> implements OnDestroy {
-    protected apiSubject = new Subject<ReadonlyArray<number>>();
+/**
+ * Base API service. Needs to be extended (abstract class)
+ *
+ * @template T data type of ServiceData.items
+ * @template A data type of the API subject
+ */
+export abstract class BaseService<T, A = any> implements OnDestroy {
+    protected apiSubject = new Subject<A>();
     protected destroyed$ = new Subject();
 
     private data = new BehaviorSubject<ServiceData<T>>({
@@ -29,8 +35,8 @@ export abstract class BaseItemsService<T = any> implements OnDestroy {
         this.setupSubscription();
     }
 
-    callAPI(ids: ReadonlyArray<number>) {
-        this.apiSubject.next(ids);
+    callAPI(value?: A) {
+        this.apiSubject.next(value);
     }
 
     protected setupSubscription() {
@@ -39,15 +45,8 @@ export abstract class BaseItemsService<T = any> implements OnDestroy {
                 tap(_ => {
                     this.processLoading();
                 }),
-                map(ids => {
-                    return ids.map(id => {
-                        return this.httpClient.get<T>(
-                            this.url.replace('{id}', '' + id)
-                        );
-                    });
-                }),
-                switchMap(obs => {
-                    return forkJoin(obs).pipe(
+                switchMap(_ => {
+                    return this.httpClient.get<T>(this.url).pipe(
                         tap(data => {
                             this.processSuccess(data);
                         }),

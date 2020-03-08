@@ -6,7 +6,7 @@ import {
 import { TestBed } from '@angular/core/testing';
 import { take } from 'rxjs/operators';
 import { HNConfig, HNConfigToken } from '../hn-config';
-import { ServiceState } from './base/base-items.service';
+import { ServiceState } from './base/base.service';
 import { Story, StoryItemsService } from './story-items.service';
 
 describe('StoryItemsService', () => {
