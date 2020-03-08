@@ -1,0 +1,25 @@
+@import 'variables';
+@import 'mixins';
+@import 'themes';
+
+.msg {
+    position: relative;
+    margin: 10px auto 10px auto;
+    margin-bottom: 20px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    border-radius: 7px;
+    padding: 5px 10px;
+    text-align: center;
+    max-width: $max-width;
+    &.error {
+        color: red;
+        border: 2px solid red;
+    }
+    &.loading {
+        color: theme-var($--theme-primary);
+        border: 2px solid theme-var($--theme-primary);
+    }
+    &.spacer {
+        visibility: hidden;
+    }
+}

@@ -1,0 +1,23 @@
+<div class="message-container">
+    <ng-container [ngSwitch]="state">
+        <ng-container *ngSwitchCase="ServiceState.error">
+            <ng-container *ngTemplateOutlet="errorRef"></ng-container>
+        </ng-container>
+        <ng-container *ngSwitchCase="ServiceState.loading">
+            <ng-container *ngTemplateOutlet="loadingRef"></ng-container>
+        </ng-container>
+        <ng-container *ngSwitchDefault>
+            <ng-container *ngTemplateOutlet="spacerRef"></ng-container>
+        </ng-container>
+    </ng-container>
+
+    <ng-template #errorRef>
+        <h4 class="msg error">Error</h4>
+    </ng-template>
+    <ng-template #loadingRef>
+        <h4 class="msg loading">Loading...</h4>
+    </ng-template>
+    <ng-template #spacerRef>
+        <h4 class="msg spacer">Spacer</h4>
+    </ng-template>
+</div>

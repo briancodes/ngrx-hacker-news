@@ -20,6 +20,11 @@ body {
     height: 100%;
 }
 
+// prevent the jump of scrollbar appears
+body {
+    overflow-y: scroll;
+}
+
 *,
 *:before,
 *:after {

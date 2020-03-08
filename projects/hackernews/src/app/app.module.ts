@@ -8,15 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ThemeServiceConfig, THEME_CONFIG } from '@bcodes/ngx-theme-service';
 import { NewsModule } from './news/news.module';
 import { HNConfigToken, HNConfig } from './shared/hn-config';
-
-const themeServiceConfig: ThemeServiceConfig = {
-    themes: ['light', 'dark'],
-    defaultTheme: 'light',
-    transitionConfig: {
-        className: 'theme-transition',
-        duration: 1000,
-    },
-};
+import { COMMON_CONSTANTS } from './shared/common.constants';
 
 @NgModule({
     declarations: [AppComponent],
@@ -24,7 +16,7 @@ const themeServiceConfig: ThemeServiceConfig = {
     providers: [
         {
             provide: THEME_CONFIG,
-            useValue: themeServiceConfig,
+            useValue: COMMON_CONSTANTS.themeServiceConfig,
         },
         {
             provide: HNConfigToken,

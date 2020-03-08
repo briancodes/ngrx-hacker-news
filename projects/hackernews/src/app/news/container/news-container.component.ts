@@ -53,6 +53,7 @@ const isSuccess = ({ state }: ServiceData) => state === ServiceState.success;
             [items]="storyItems$ | async"
             (loadMore)="handleLoadMore()"
         ></app-top-stories>
+        <app-message [state]="viewState$ | async"></app-message>
     `,
     styleUrls: ['./news-container.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -61,7 +62,7 @@ export class NewsContainerComponent implements OnInit, OnDestroy {
     storyItems$ = new BehaviorSubject<Story[]>([]);
     private destroyed$ = new Subject();
 
-    /* Options boolean true to indicate a page refresh */
+    /* Optional boolean true to indicate a page refresh */
     private loadMore$ = new Subject<boolean | undefined>();
 
     viewState$ = combineLatest([
@@ -147,7 +148,9 @@ export class NewsContainerComponent implements OnInit, OnDestroy {
                 }, initialAcc),
                 map(({ page, serviceData }) => {
                     const ids = this.getRequestIDs(serviceData.items, page);
-                    this.itemsService.callAPI(ids);
+                    if (ids.length > 0) {
+                        this.itemsService.callAPI(ids);
+                    }
                 }),
                 takeUntil(this.destroyed$)
             )

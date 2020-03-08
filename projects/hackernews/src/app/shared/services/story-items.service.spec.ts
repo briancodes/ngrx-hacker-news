@@ -4,11 +4,10 @@ import {
     HttpTestingController,
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { take } from 'rxjs/operators';
 import { HNConfig, HNConfigToken } from '../hn-config';
 import { ServiceState } from './base/base-items.service';
-import { StoryItemsService, Story } from './story-items.service';
-import { request } from 'http';
-import { take } from 'rxjs/operators';
+import { Story, StoryItemsService } from './story-items.service';
 
 describe('StoryItemsService', () => {
     let service: StoryItemsService;
