@@ -103,7 +103,8 @@ export class NewsContainerComponent implements OnInit, OnDestroy {
         this.topStoriesService.data$
             .pipe(
                 tap(_ => {
-                    this.storyItems$.next([]);
+                    // Clear any currently displayed stories
+                    this.clearStories();
                 }),
                 filter(isSuccess),
                 tap(_ => {
@@ -160,6 +161,14 @@ export class NewsContainerComponent implements OnInit, OnDestroy {
     private getRequestIDs(ids: number[], page: number): number[] {
         const reqAmount = this.config.storyRequestCount;
         return ids.slice((page - 1) * reqAmount, page * reqAmount);
+    }
+
+    /**
+     * clear current stories and cancel any calls in progress
+     */
+    private clearStories() {
+        this.storyItems$.next([]);
+        this.itemsService.callAPI([]);
     }
 
     ngOnDestroy() {

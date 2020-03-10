@@ -46,7 +46,7 @@ export class StoryItemsService extends BaseService<Story, number[]> {
                     });
                 }),
                 switchMap(obs => {
-                    return forkJoin(obs).pipe(
+                    return (obs.length ? forkJoin(obs) : of([])).pipe(
                         tap(data => {
                             this.processSuccess(data);
                         }),
