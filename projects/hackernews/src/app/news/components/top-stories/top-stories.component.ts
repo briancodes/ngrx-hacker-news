@@ -28,7 +28,7 @@ export class TopStoriesComponent implements OnInit {
     }
 
     handleWindowEvent(event: Event) {
-        if (event.type === 'scroll') {
+        if (event.type === 'scroll' || event.type === 'resize') {
             const viewportHeight = Math.max(
                 window.innerHeight,
                 document.documentElement.clientHeight
