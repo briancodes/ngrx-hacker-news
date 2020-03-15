@@ -1,10 +1,22 @@
-# NgHackerNews
+# NgRxackerNews
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.4.
 
 ## Live Demo
 
-https://ng-hackernews-22582.firebaseapp.com
+// TODO
+
+## NgRx References
+
+[Announcing NgRx Version 8: creator functions, *Tim Deschryver, 2019*
+](https://medium.com/ngrx/announcing-ngrx-version-8-ngrx-data-create-functions-runtime-checks-and-mock-selectors-a44fac112627)
+
+[NGRX a clean and clear introduction, *Santiago García da Rosa
+, 2018*](https://levelup.gitconnected.com/angular-ngrx-a-clean-and-clear-introduction-4ed61c89c1fc)
+
+[Start Flying with Angular and NgRx, *andrewevans0102
+19 March, 2019
+, 2019*](https://indepth.dev/how-to-start-flying-with-angular-and-ngrx/)
 
 ## Development server
 
