@@ -11,6 +11,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 [Announcing NgRx Version 8: creator functions, *Tim Deschryver, 2019*
 ](https://medium.com/ngrx/announcing-ngrx-version-8-ngrx-data-create-functions-runtime-checks-and-mock-selectors-a44fac112627)
 
+- [with NgRx official example on Github](https://github.com/ngrx/platform/tree/master/projects/example-app/src/app)
+
 [NGRX a clean and clear introduction, *Santiago García da Rosa
 , 2018*](https://levelup.gitconnected.com/angular-ngrx-a-clean-and-clear-introduction-4ed61c89c1fc)
 

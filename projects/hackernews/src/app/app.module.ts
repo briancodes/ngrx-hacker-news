@@ -20,7 +20,7 @@ import { environment } from '../environments/environment';
         HttpClientModule,
         BrowserModule,
         AppRoutingModule,
-        // NewsModule,
+        NewsModule,
         StoreModule.forRoot(reducers, {
             metaReducers,
             runtimeChecks: {
@@ -29,7 +29,6 @@ import { environment } from '../environments/environment';
             },
         }),
         !environment.production ? StoreDevtoolsModule.instrument() : [],
-        [NewsModule],
     ],
     providers: [
         {

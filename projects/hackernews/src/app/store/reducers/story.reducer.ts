@@ -1,7 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 import * as fp from 'lodash/fp';
 import { ServiceState, Story } from '../../shared/services';
-import * as StoryActions from '../actions/story.actions';
+import { StoryActions } from '../actions';
 import { initialStoryState, IStoryState } from '../state/story.state';
 
 const keyById = fp.keyBy<Story>('id');
