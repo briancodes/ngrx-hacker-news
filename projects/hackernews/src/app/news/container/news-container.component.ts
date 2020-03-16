@@ -5,45 +5,35 @@ import {
     OnDestroy,
     OnInit,
 } from '@angular/core';
-import { combineLatest, Subject, BehaviorSubject } from 'rxjs';
-import {
-    filter,
-    map,
-    scan,
-    shareReplay,
-    takeUntil,
-    tap,
-    take,
-} from 'rxjs/operators';
+import { Store, select } from '@ngrx/store';
+import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
+import { map, shareReplay, filter, tap, takeUntil, take } from 'rxjs/operators';
 import { HNConfigToken, HNConfigType } from '../../shared/hn-config';
-import {
-    ServiceData,
-    ServiceState,
-    Story,
-    StoryItemsService,
-    TopStoriesService,
-} from '../../shared/services';
+import { ServiceState, Story } from '../../shared/services';
+import { IAppState } from '../../store/state/app.state';
+import { StorySelectors } from '../../store/selectors';
+import { StoryActions } from '../../store/actions';
 
 // Viewstate helper functions
 const anyStateEquals = (serviceState: ServiceState) => (
-    ...arr: ServiceData[]
+    arr: ServiceState[]
 ) => {
-    return arr.some(({ state }) => state === serviceState);
+    return arr.some(state => state === serviceState);
 };
 const anyLoading = anyStateEquals(ServiceState.loading);
 const anyError = anyStateEquals(ServiceState.error);
 
-const determineViewState = (serviceDataArr: ServiceData[]) => {
-    if (anyLoading(...serviceDataArr)) {
+const determineViewState = (states: ServiceState[]) => {
+    if (anyLoading(states)) {
         return ServiceState.loading;
     }
-    if (anyError(...serviceDataArr)) {
+    if (anyError(states)) {
         return ServiceState.error;
     }
     return ServiceState.success;
 };
 
-const isSuccess = ({ state }: ServiceData) => state === ServiceState.success;
+const isSuccess = (state: ServiceState) => state === ServiceState.success;
 
 @Component({
     selector: 'app-news-container',
@@ -59,116 +49,74 @@ const isSuccess = ({ state }: ServiceData) => state === ServiceState.success;
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NewsContainerComponent implements OnInit, OnDestroy {
-    storyItems$ = new BehaviorSubject<Story[]>([]);
-    private destroyed$ = new Subject();
-
-    /* Optional boolean true to indicate a page refresh */
-    private loadMore$ = new Subject<boolean | undefined>();
+    storyItems$ = this.store.pipe(
+        select(StorySelectors.selectStoriesToDisplay)
+    );
 
     viewState$ = combineLatest([
-        this.topStoriesService.data$,
-        this.itemsService.data$,
-    ]).pipe(map(determineViewState), shareReplay(1));
+        this.store.pipe(select(StorySelectors.selectTopStoriesServiceState)),
+        this.store.pipe(select(StorySelectors.selectStoryItemsServiceState)),
+    ]).pipe(
+        map(determineViewState),
+        tap(ss => {
+            this.loadingEnabled = isSuccess(ss);
+        }),
+        shareReplay(1)
+    );
+
+    private destroyed$ = new Subject();
+
+    private pageCount = 1;
+
+    private loadingEnabled: boolean;
 
     constructor(
         @Inject(HNConfigToken) private config: HNConfigType,
-        private topStoriesService: TopStoriesService,
-        private itemsService: StoryItemsService
+        private store: Store<IAppState>
     ) {}
 
     ngOnInit(): void {
-        this.servcieDataSubscribe();
-        this.loadMoreSubscribe();
-        this.handleRefersh();
+        this.loadTopStories();
+        this.store
+            .pipe(
+                select(StorySelectors.selectTopStoriesServiceState),
+                filter(isSuccess),
+                tap(() => {
+                    this.loadMoreStories(true);
+                }),
+                takeUntil(this.destroyed$)
+            )
+            .subscribe();
     }
 
     handleLoadMore() {
-        this.viewState$
-            .pipe(
-                tap(state => {
-                    if (state === ServiceState.success) {
-                        this.loadMore$.next();
-                    }
-                }),
-                take(1)
-            )
-            .subscribe();
+        if (!this.loadingEnabled) {
+            return;
+        }
+        this.loadMoreStories();
+    }
+
+    loadMoreStories(isRefresh = false) {
+        const count = isRefresh
+            ? this.pageCount * this.config.storyRequestCount
+            : ++this.pageCount * this.config.storyRequestCount;
+        this.loadStoryItems(count);
     }
 
     handleRefersh() {
-        this.topStoriesService.callAPI();
+        this.loadTopStories();
     }
 
-    private servcieDataSubscribe() {
-        this.topStoriesService.data$
-            .pipe(
-                tap(_ => {
-                    // Clear any currently displayed stories
-                    this.clearStories();
-                }),
-                filter(isSuccess),
-                tap(_ => {
-                    this.loadMore$.next(true);
-                }),
-                takeUntil(this.destroyed$)
-            )
-            .subscribe();
-
-        this.itemsService.data$
-            .pipe(
-                filter(isSuccess),
-                tap(data => {
-                    this.storyItems$.next([
-                        ...this.storyItems$.value,
-                        ...data.items,
-                    ]);
-                }),
-                takeUntil(this.destroyed$)
-            )
-            .subscribe();
+    private loadTopStories() {
+        this.store.dispatch(StoryActions.loadTopStories());
     }
 
-    private loadMoreSubscribe() {
-        const initialAcc = {
-            page: 0,
-            isRefresh: true,
-            serviceData: {} as ServiceData,
-        };
-        type Accumulator = typeof initialAcc;
-        combineLatest([this.loadMore$, this.topStoriesService.data$])
-            .pipe(
-                filter(([_, serviceData]) => isSuccess(serviceData)),
-                // Use a scan (like a reducer) to keep track of current page load number
-                scan<any, Accumulator>((acc, [isRefresh, serviceData]) => {
-                    const page = isRefresh ? 1 : acc.page + 1;
-                    return {
-                        page,
-                        isRefresh,
-                        serviceData,
-                    };
-                }, initialAcc),
-                map(({ page, serviceData }) => {
-                    const ids = this.getRequestIDs(serviceData.items, page);
-                    if (ids.length > 0) {
-                        this.itemsService.callAPI(ids);
-                    }
-                }),
-                takeUntil(this.destroyed$)
-            )
-            .subscribe();
-    }
-
-    private getRequestIDs(ids: number[], page: number): number[] {
-        const reqAmount = this.config.storyRequestCount;
-        return ids.slice((page - 1) * reqAmount, page * reqAmount);
-    }
-
-    /**
-     * clear current stories and cancel any calls in progress
-     */
-    private clearStories() {
-        this.storyItems$.next([]);
-        this.itemsService.callAPI([]);
+    private loadStoryItems(count: number) {
+        this.store.dispatch(
+            StoryActions.loadStoryItems({
+                count,
+            })
+        );
     }
 
     ngOnDestroy() {

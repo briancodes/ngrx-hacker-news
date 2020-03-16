@@ -3,12 +3,13 @@ import { Story } from '../../shared/services';
 
 // Top Stories
 export const loadTopStories = createAction('[Story] loadTopStories');
-export const loadTopStoriesSuccess = createAction(
-    '[Story] loadTopStoriesSuccess',
+export const topStoriesLoading = createAction('[Story] topStoriesLoading');
+export const topStoriesSuccess = createAction(
+    '[Story] topStoriesSuccess',
     props<{ ids: number[] }>()
 );
-export const loadTopStoriesFailure = createAction(
-    '[Story] loadTopStoriesFailure',
+export const topStoriesFailure = createAction(
+    '[Story] topStoriesFailure',
     props<{ error: string }>()
 );
 
@@ -17,11 +18,18 @@ export const loadStoryItems = createAction(
     '[Story] loadStoryItems',
     props<{ count: number }>()
 );
-export const loadStoryItemsSuccess = createAction(
-    '[Story] loadStoryItemsSuccess',
+export const storyItemsLoading = createAction('[Story] storyItemsLoading');
+export const storyItemsSuccess = createAction(
+    '[Story] storyItemsSuccess',
     props<{ items: Story[] }>()
 );
-export const loadStoryItemsFailure = createAction(
-    '[Story] loadStoryItemsFailure',
+export const storyItemsFailure = createAction(
+    '[Story] storyItemsFailure',
     props<{ error: string }>()
+);
+
+// Update stories to display
+export const updateTopStoriesToDisplay = createAction(
+    '[Story] updateTopStoriesToDisplay',
+    props<{ ids: ReadonlyArray<number> }>()
 );

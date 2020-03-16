@@ -8,30 +8,51 @@ const keyById = fp.keyBy<Story>('id');
 
 export const storyReducer = createReducer<IStoryState>(
     initialStoryState,
-    on(StoryActions.loadTopStoriesSuccess, (state, { ids }) => {
+    // Top Story IDs
+    on(StoryActions.topStoriesLoading, state => {
         return {
             ...state,
-            topStories: ids,
+            topStoriesServiceState: ServiceState.loading,
+        };
+    }),
+    on(StoryActions.topStoriesSuccess, (state, { ids }) => {
+        return {
+            ...state,
+            topStoryIds: ids,
             topStoriesServiceState: ServiceState.success,
         };
     }),
-    on(StoryActions.loadTopStoriesFailure, (state, { error }) => {
+    on(StoryActions.topStoriesFailure, (state, { error }) => {
         return {
             ...state,
             topStoriesServiceState: ServiceState.error,
         };
     }),
-    on(StoryActions.loadStoryItemsSuccess, (state, { items }) => {
+    // Story Items
+    on(StoryActions.storyItemsLoading, state => {
+        return {
+            ...state,
+            storyItemsServiceState: ServiceState.loading,
+        };
+    }),
+    on(StoryActions.storyItemsSuccess, (state, { items }) => {
         return {
             ...state,
             storyItems: { ...state.storyItems, ...keyById(items) },
             storyItemsServiceState: ServiceState.success,
         };
     }),
-    on(StoryActions.loadStoryItemsFailure, (state, { error }) => {
+    on(StoryActions.storyItemsFailure, (state, { error }) => {
         return {
             ...state,
             storyItemsServiceState: ServiceState.error,
+        };
+    }),
+    // Update displayed stories
+    on(StoryActions.updateTopStoriesToDisplay, (state, { ids }) => {
+        return {
+            ...state,
+            topStoriesToDisplay: ids,
         };
     })
 );

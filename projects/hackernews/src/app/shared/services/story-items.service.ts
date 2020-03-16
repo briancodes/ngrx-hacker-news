@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { forkJoin, Observable } from 'rxjs';
+import { forkJoin, Observable, of } from 'rxjs';
 import { HNConfigToken, HNConfigType } from '../hn-config';
 
 export interface Story {
@@ -30,6 +30,6 @@ export class StoryItemsService {
                 this.config.itemUrl.replace('{id}', '' + id)
             );
         });
-        return forkJoin(obs);
+        return obs.length ? forkJoin(obs) : of([]);
     }
 }
