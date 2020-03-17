@@ -2,7 +2,13 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
-import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
+import {
+    catchError,
+    map,
+    switchMap,
+    withLatestFrom,
+    mergeMap,
+} from 'rxjs/operators';
 import { StoryItemsService, TopStoriesService } from '../../shared/services';
 import { StoryActions } from '../actions';
 import { IAppState } from '../state/app.state';
@@ -34,22 +40,19 @@ export class StoryEffects {
             switchMap(([{ count }, { stories: storiesState }]) => {
                 this.store$.dispatch(StoryActions.storyItemsLoading());
 
-                const ids = storiesState.topStoryIds.slice(0, count);
-                // Only get the Story items we don't already have
-                const idsToFetch = ids.filter(id => {
-                    return !storiesState.storyItems[id];
-                });
+                const idsToDisplay = storiesState.topStoryIds.slice(0, count);
+                const idsToFetch = idsToDisplay.filter(
+                    id => !storiesState.storyItems[id]
+                );
                 return this.storyItemsService.getStoryItems(idsToFetch).pipe(
-                    map(items => {
-                        this.store$.dispatch(
-                            StoryActions.updateTopStoriesToDisplay({
-                                ids,
-                            })
-                        );
-                        return StoryActions.storyItemsSuccess({
+                    mergeMap(items => [
+                        StoryActions.storyItemsSuccess({
                             items,
-                        });
-                    }),
+                        }),
+                        StoryActions.updateTopStoriesToDisplay({
+                            ids: idsToDisplay,
+                        }),
+                    ]),
                     catchError(error => {
                         return of(StoryActions.storyItemsFailure({ error }));
                     })

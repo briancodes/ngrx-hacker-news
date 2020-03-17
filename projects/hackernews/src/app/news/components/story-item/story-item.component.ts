@@ -8,6 +8,7 @@ import { Story } from '../../../shared/services';
 })
 export class StoryItemComponent implements OnInit {
     @Input() item: Story;
+    @Input() index: number;
     constructor() {}
 
     ngOnInit(): void {}

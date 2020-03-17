@@ -38,7 +38,6 @@ export class TopStoriesComponent implements OnInit {
                 document.body.scrollHeight - 20
             ) {
                 this.zone.run(() => {
-                    console.log('window event emit');
                     this.loadMore.emit();
                 });
             }
