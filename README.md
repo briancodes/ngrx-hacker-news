@@ -1,6 +1,6 @@
 # NgRxHackerNews
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.4.
+This is a clone of my project [ng-hacker-news](https://github.com/briancodes/ng-hacker-news) updated to use **NgRx** for state management (in place of observable data services)
 
 ## Live Demo
 
