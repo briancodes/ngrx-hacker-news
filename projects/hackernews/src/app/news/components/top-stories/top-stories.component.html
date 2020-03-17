@@ -3,7 +3,7 @@
     [bcGlobalListeners]="['window:scroll']"
     (bcGlobalEvent)="handleWindowEvent($event)"
 >
-    <ng-container *ngFor="let item of items; trackBy: trackByFn">
-        <app-story-item [item]="item"></app-story-item>
+    <ng-container *ngFor="let item of items; trackBy: trackByFn; let i = index">
+        <app-story-item [index]="i" [item]="item"></app-story-item>
     </ng-container>
 </section>

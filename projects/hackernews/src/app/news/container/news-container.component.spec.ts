@@ -137,7 +137,7 @@ describe('NewsContainerComponent', () => {
         // Batch 2
 
         // Trigger load more stories
-        componentInstance.handleLoadMore();
+        componentInstance.loadMoreStories();
 
         const idsBatch2 = ids.slice(5);
         const requestsBatch2 = getItemRequests(idsBatch2);

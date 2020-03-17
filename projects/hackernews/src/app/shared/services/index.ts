@@ -1,3 +1,3 @@
-export * from './base/base.service';
+export * from './model';
 export * from './story-items.service';
 export * from './top-stories.service';

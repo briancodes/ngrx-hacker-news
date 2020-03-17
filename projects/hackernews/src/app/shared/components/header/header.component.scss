@@ -23,10 +23,30 @@
     h1,
     h2,
     h3,
-    h4 {
+    h4,
+    h5 {
         margin: 0;
         margin-left: 5px;
+        padding-right: 5px;
+        font-weight: bold;
         color: black;
+    }
+}
+
+%link-items {
+    margin-bottom: 0px;
+    margin: 3px;
+}
+
+.page-links {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: baseline;
+    a:hover * {
+        color: #edbcf1;
+    }
+    a:not(:first-child) {
+        border-left: 2px solid theme-var($--theme-secondary);
     }
 }
 
@@ -35,7 +55,7 @@
     flex-flow: row wrap;
     align-items: center;
     justify-content: flex-end;
-    .button-clear {
-        margin-bottom: 0;
+    > * {
+        @extend %link-items;
     }
 }

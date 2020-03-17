@@ -1,10 +1,38 @@
-# NgHackerNews
+# NgRxHackerNews
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.4.
 
 ## Live Demo
 
-https://ng-hackernews-22582.firebaseapp.com
+// TODO
+
+## NgRx References
+
+[Announcing NgRx Version 8: creator functions, *Tim Deschryver, 2019*](https://medium.com/ngrx/announcing-ngrx-version-8-ngrx-data-create-functions-runtime-checks-and-mock-selectors-a44fac112627)
+
+- [with NgRx official example on Github](https://github.com/ngrx/platform/tree/master/projects/example-app/src/app)
+
+[Start Using NgRx Effects for This, *Tim Deschryver, 2018*](https://timdeschryver.dev/blog/start-using-ngrx-effects-for-this#4-using-a-selector-inside-your-effects)
+
+```
+@Effect()
+shipOrder = this.actions.pipe(
+  ofType<ShipOrder>(ActionTypes.ShipOrder),
+  map(action => action.payload),
+  concatMap(action =>
+    of(action).pipe(
+      withLatestFrom(store.pipe(select(getUserName)))
+    )
+  ),
+  map([payload, username] => {
+    ...
+  })
+)
+```
+
+[NGRX a clean and clear introduction, *Santiago García da Rosa, 2018*](https://levelup.gitconnected.com/angular-ngrx-a-clean-and-clear-introduction-4ed61c89c1fc)
+
+[Start Flying with Angular and NgRx, *andrewevans0102, inDepth.dev, 2019*](https://indepth.dev/how-to-start-flying-with-angular-and-ngrx/)
 
 ## Development server
 

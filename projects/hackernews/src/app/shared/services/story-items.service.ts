@@ -1,9 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
+import { forkJoin, Observable, of } from 'rxjs';
 import { HNConfigToken, HNConfigType } from '../hn-config';
-import { BaseService } from './base/base.service';
-import { tap, map, switchMap, catchError, takeUntil } from 'rxjs/operators';
-import { forkJoin, of } from 'rxjs';
 
 export interface Story {
     by: string;
@@ -20,44 +18,18 @@ export interface Story {
 @Injectable({
     providedIn: 'root',
 })
-export class StoryItemsService extends BaseService<Story, number[]> {
+export class StoryItemsService {
     constructor(
-        httpClient: HttpClient,
-        @Inject(HNConfigToken) config: HNConfigType
-    ) {
-        super(httpClient, config.itemUrl);
-    }
+        private httpClient: HttpClient,
+        @Inject(HNConfigToken) private config: HNConfigType
+    ) {}
 
-    callAPI(ids: number[]) {
-        this.apiSubject.next(ids);
-    }
-
-    protected setupSubscription() {
-        this.apiSubject
-            .pipe(
-                tap(_ => {
-                    this.processLoading();
-                }),
-                map(ids => {
-                    return ids.map(id => {
-                        return this.httpClient.get<Story>(
-                            this.url.replace('{id}', '' + id)
-                        );
-                    });
-                }),
-                switchMap(obs => {
-                    return (obs.length ? forkJoin(obs) : of([])).pipe(
-                        tap(data => {
-                            this.processSuccess(data);
-                        }),
-                        catchError(error => {
-                            this.processError(error);
-                            return of(error);
-                        })
-                    );
-                }),
-                takeUntil(this.destroyed$)
-            )
-            .subscribe();
+    getStoryItems(ids: number[]): Observable<Story[]> {
+        const obs = ids.map(id => {
+            return this.httpClient.get<Story>(
+                this.config.itemUrl.replace('{id}', '' + id)
+            );
+        });
+        return obs.length ? forkJoin(obs) : of([]);
     }
 }
