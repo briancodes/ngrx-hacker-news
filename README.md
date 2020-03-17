@@ -4,7 +4,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Live Demo
 
-// TODO
+https://ngrx-hacker-news.firebaseapp.com/
+- Install [Redux DevTools Extension](http://extension.remotedev.io/) to inspect state changes
 
 ## NgRx References
 
