@@ -45,6 +45,9 @@
     a:hover * {
         color: #edbcf1;
     }
+    a:not(:first-child) {
+        border-left: 2px solid theme-var($--theme-secondary);
+    }
 }
 
 .header-links {

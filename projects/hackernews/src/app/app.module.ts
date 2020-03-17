@@ -16,6 +16,7 @@ import { appReducer } from './store/reducers/app.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { StoryEffects } from './store/effects/story.effects';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
+import { AboutModule } from './about/about.module';
 
 @NgModule({
     declarations: [AppComponent],
@@ -24,6 +25,7 @@ import { StoreRouterConnectingModule } from '@ngrx/router-store';
         BrowserModule,
         AppRoutingModule,
         NewsModule,
+        AboutModule,
         StoreModule.forRoot(appReducer, {
             runtimeChecks: {
                 strictStateImmutability: true,
@@ -32,7 +34,7 @@ import { StoreRouterConnectingModule } from '@ngrx/router-store';
         }),
         EffectsModule.forRoot([StoryEffects]),
         StoreRouterConnectingModule.forRoot({ stateKey: 'router' }),
-        !environment.production ? StoreDevtoolsModule.instrument() : [],
+        StoreDevtoolsModule.instrument(),
     ],
     providers: [
         {
