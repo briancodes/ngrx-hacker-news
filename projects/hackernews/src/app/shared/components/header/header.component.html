@@ -1,11 +1,14 @@
 <header class="header-container">
     <div class="header-content">
-        <h4>NgRx Hacker News</h4>
+        <div class="page-links">
+            <a [routerLink]="['/news']"><h4>NgRx Hacker News</h4></a>
+            <a [routerLink]="['/news']"><h5>About</h5></a>
+        </div>
         <div class="header-links">
-            <button class="button button-clear" (click)="handleRefreshClick()">
+            <button class="button" (click)="handleRefreshClick()">
                 Refresh
             </button>
-            <button class="button button-clear" (click)="handleThemeClick()">
+            <button class="button" (click)="handleThemeClick()">
                 Switch Theme
             </button>
         </div>

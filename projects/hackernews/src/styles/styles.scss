@@ -49,16 +49,7 @@ a {
 
 h2,
 h3,
-h4 {
+h4,
+h5 {
     font-weight: bold;
-}
-
-.button.button-clear {
-    color: black;
-    &:hover {
-        color: gray;
-    }
-    &:focus {
-        color: rgb(22, 21, 21);
-    }
 }
